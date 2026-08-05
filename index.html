@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f6f5f" />
+  <meta name="description" content="Plan personal para bajar de 98,5 kg a menos de 90 kg." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles-base.css" />
+  <link rel="stylesheet" href="styles-components.css" />
+  <title>Plan 90</title>
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">PLAN PERSONAL</p>
+      <h1>Plan 90</h1>
+    </div>
+    <button id="installBtn" class="ghost hidden">Instalar</button>
+  </header>
+
+  <main>
+    <section id="inicio" class="screen active">
+      <article class="hero card">
+        <div>
+          <p class="muted">Peso actual</p>
+          <p class="hero-weight"><span id="currentWeight">98,5</span> kg</p>
+          <p class="muted">Objetivo inicial: menos de 90 kg</p>
+        </div>
+        <div class="progress-ring" aria-label="Progreso hacia el objetivo">
+          <span id="progressPercent">0%</span>
+        </div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card metric">
+          <span class="metric-label">Perdido</span>
+          <strong id="lostWeight">0,0 kg</strong>
+        </article>
+        <article class="card metric">
+          <span class="metric-label">Faltan</span>
+          <strong id="remainingWeight">8,6 kg</strong>
+        </article>
+      </div>
+
+      <article class="card">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">HOY</p>
+            <h2 id="todayName">Miércoles</h2>
+          </div>
+          <span id="todayDate" class="pill"></span>
+        </div>
+        <div class="today-row">
+          <div>
+            <span class="label">Entrenamiento</span>
+            <p id="todayWorkout">Circuito de fuerza</p>
+          </div>
+          <button class="primary" data-go="ejercicio">Empezar</button>
+        </div>
+        <div class="today-row border-top">
+          <div>
+            <span class="label">Próxima comida</span>
+            <p id="nextMeal">Consulta el menú del día</p>
+          </div>
+          <button class="secondary" data-go="menu">Ver menú</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-title">
+          <h2>Evolución</h2>
+          <button class="link-button" data-go="progreso">Ver registro</button>
+        </div>
+        <div id="miniChart" class="mini-chart"></div>
+      </article>
+    </section>
+
+    <section id="menu" class="screen">
+      <div class="section-title sticky-title">
+        <div>
+          <p class="eyebrow">ALIMENTACIÓN</p>
+          <h2>Menú semanal</h2>
+        </div>
+      </div>
+      <div id="dayTabs" class="day-tabs"></div>
+      <div id="mealList" class="stack"></div>
+    </section>
+
+    <section id="ejercicio" class="screen">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">ACTIVIDAD</p>
+          <h2>Entrenamiento semanal</h2>
+        </div>
+      </div>
+      <div id="workoutWeek" class="stack"></div>
+    </section>
+
+    <section id="progreso" class="screen">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">SEGUIMIENTO</p>
+          <h2>Mi progreso</h2>
+        </div>
+      </div>
+
+      <form id="weightForm" class="card form-card">
+        <label>
+          Peso de hoy (kg)
+          <input id="weightInput" type="number" min="50" max="180" step="0.1" required inputmode="decimal" />
+        </label>
+        <label>
+          Cintura (cm, opcional)
+          <input id="waistInput" type="number" min="50" max="180" step="0.5" inputmode="decimal" />
+        </label>
+        <button class="primary full" type="submit">Guardar registro</button>
+      </form>
+
+      <article class="card">
+        <h3>Historial</h3>
+        <div id="weightHistory" class="history-list"></div>
+      </article>
+
+      <button id="resetData" class="danger-outline full">Borrar mis datos</button>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <button class="nav-item active" data-screen="inicio"><span>⌂</span>Inicio</button>
+    <button class="nav-item" data-screen="menu"><span>☰</span>Menú</button>
+    <button class="nav-item" data-screen="ejercicio"><span>▶</span>Ejercicio</button>
+    <button class="nav-item" data-screen="progreso"><span>↗</span>Progreso</button>
+  </nav>
+
+  <dialog id="recipeDialog" class="dialog">
+    <button class="dialog-close" aria-label="Cerrar">×</button>
+    <div id="recipeContent"></div>
+  </dialog>
+
+  <dialog id="workoutDialog" class="dialog workout-dialog">
+    <button class="dialog-close" aria-label="Cerrar">×</button>
+    <div id="workoutContent"></div>
+  </dialog>
+
+  <script src="app-data.js" defer></script>
+  <script src="app-main.js" defer></script>
+</body>
+</html>
