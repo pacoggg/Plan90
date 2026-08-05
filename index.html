@@ -7,8 +7,8 @@
   <meta name="description" content="Plan personal para bajar de 98,5 kg a menos de 90 kg." />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles-base.css" />
-  <link rel="stylesheet" href="styles-components.css" />
+  <link rel="stylesheet" href="styles-base.css?v=0.1.1" />
+  <link rel="stylesheet" href="styles-components.css?v=0.1.1" />
   <title>Plan 90</title>
 </head>
 <body>
@@ -44,7 +44,9 @@
         </article>
       </div>
 
-      <article class="card">
+      <button class="primary full quick-register" data-go="progreso">Registrar peso de hoy</button>
+
+      <article class="card today-card">
         <div class="section-title">
           <div>
             <p class="eyebrow">HOY</p>
@@ -68,7 +70,7 @@
         </div>
       </article>
 
-      <article class="card">
+      <article class="card evolution-card">
         <div class="section-title">
           <h2>Evolución</h2>
           <button class="link-button" data-go="progreso">Ver registro</button>
@@ -78,51 +80,24 @@
     </section>
 
     <section id="menu" class="screen">
-      <div class="section-title sticky-title">
-        <div>
-          <p class="eyebrow">ALIMENTACIÓN</p>
-          <h2>Menú semanal</h2>
-        </div>
-      </div>
+      <div class="section-title sticky-title"><div><p class="eyebrow">ALIMENTACIÓN</p><h2>Menú semanal</h2></div></div>
       <div id="dayTabs" class="day-tabs"></div>
       <div id="mealList" class="stack"></div>
     </section>
 
     <section id="ejercicio" class="screen">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">ACTIVIDAD</p>
-          <h2>Entrenamiento semanal</h2>
-        </div>
-      </div>
+      <div class="section-title"><div><p class="eyebrow">ACTIVIDAD</p><h2>Entrenamiento semanal</h2></div></div>
       <div id="workoutWeek" class="stack"></div>
     </section>
 
     <section id="progreso" class="screen">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">SEGUIMIENTO</p>
-          <h2>Mi progreso</h2>
-        </div>
-      </div>
-
+      <div class="section-title"><div><p class="eyebrow">SEGUIMIENTO</p><h2>Mi progreso</h2></div></div>
       <form id="weightForm" class="card form-card">
-        <label>
-          Peso de hoy (kg)
-          <input id="weightInput" type="number" min="50" max="180" step="0.1" required inputmode="decimal" />
-        </label>
-        <label>
-          Cintura (cm, opcional)
-          <input id="waistInput" type="number" min="50" max="180" step="0.5" inputmode="decimal" />
-        </label>
+        <label>Peso de hoy (kg)<input id="weightInput" type="number" min="50" max="180" step="0.1" required inputmode="decimal" /></label>
+        <label>Cintura (cm, opcional)<input id="waistInput" type="number" min="50" max="180" step="0.5" inputmode="decimal" /></label>
         <button class="primary full" type="submit">Guardar registro</button>
       </form>
-
-      <article class="card">
-        <h3>Historial</h3>
-        <div id="weightHistory" class="history-list"></div>
-      </article>
-
+      <article class="card"><h3>Historial</h3><div id="weightHistory" class="history-list"></div></article>
       <button id="resetData" class="danger-outline full">Borrar mis datos</button>
     </section>
   </main>
@@ -134,17 +109,10 @@
     <button class="nav-item" data-screen="progreso"><span>↗</span>Progreso</button>
   </nav>
 
-  <dialog id="recipeDialog" class="dialog">
-    <button class="dialog-close" aria-label="Cerrar">×</button>
-    <div id="recipeContent"></div>
-  </dialog>
+  <dialog id="recipeDialog" class="dialog"><button class="dialog-close" aria-label="Cerrar">×</button><div id="recipeContent"></div></dialog>
+  <dialog id="workoutDialog" class="dialog workout-dialog"><button class="dialog-close" aria-label="Cerrar">×</button><div id="workoutContent"></div></dialog>
 
-  <dialog id="workoutDialog" class="dialog workout-dialog">
-    <button class="dialog-close" aria-label="Cerrar">×</button>
-    <div id="workoutContent"></div>
-  </dialog>
-
-  <script src="app-data.js" defer></script>
-  <script src="app-main.js" defer></script>
+  <script src="app-data.js?v=0.1.1" defer></script>
+  <script src="app-main.js?v=0.1.1" defer></script>
 </body>
 </html>
