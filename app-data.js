@@ -1,5 +1,5 @@
 const profiles = {
-  yo: {name:'Mi plan', startWeight:98.5, targetWeight:89.9, storageKey:'plan90Data', note:'Plan personal de pérdida de peso.'},
+  yo: {name:'Paco', startWeight:98.5, targetWeight:89.9, storageKey:'plan90Data', note:'Plan personal de pérdida de peso.'},
   montse: {name:'Montse', startWeight:73, targetWeight:65, storageKey:'plan90DataMontse', note:'Inicio suave: fuerza, movilidad y caminatas adaptadas.'}
 };
 
