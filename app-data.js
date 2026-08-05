@@ -161,6 +161,7 @@ const montseWorkouts = [
 ];
 
 let selectedDay = menuDays[(new Date().getDay()+6)%7];
+let selectedWorkoutDay = selectedDay;
 let deferredPrompt = null;
 let timerId = null;
 let workoutState = null;

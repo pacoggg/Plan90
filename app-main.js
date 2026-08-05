@@ -77,15 +77,18 @@ function openRecipe(key) {
 
 function renderWorkouts() {
   const data = getData();
-  $('#workoutWeek').innerHTML = getWorkouts().map((w,i) => {
-    const done = data.completed[w.day] === todayISO();
-    return `<article class="workout-card ${done?'done':''}">
+  const workouts=getWorkouts();
+  $('#workoutTabs').innerHTML = menuDays.map(day => `<button class="day-tab ${day===selectedWorkoutDay?'active':''}" data-workout-day="${day}">${day.slice(0,3)}</button>`).join('');
+  $$('[data-workout-day]').forEach(btn=>btn.onclick=()=>{selectedWorkoutDay=btn.dataset.workoutDay;renderWorkouts();});
+  const i=workouts.findIndex(w=>w.day===selectedWorkoutDay);
+  const w=workouts[i] || workouts[0];
+  const done = data.completed[w.day] === todayISO();
+  $('#workoutWeek').innerHTML = `<article class="workout-card ${done?'done':''}">
       <header><div><span class="label">${w.day}</span><h3>${w.type}</h3><p class="meal-meta">${w.detail}</p></div><span class="pill">${done?'Hecho':'Semana 1'}</span></header>
       <div class="workout-actions">
         ${w.exercises.length?`<button class="primary" data-start-workout="${i}">Empezar rutina</button>`:`<button class="secondary" data-complete="${w.day}">${done?'Completado':'Marcar como hecho'}</button>`}
       </div>
     </article>`;
-  }).join('');
   $$('[data-start-workout]').forEach(b=>b.addEventListener('click',()=>startWorkout(Number(b.dataset.startWorkout))));
   $$('[data-complete]').forEach(b=>b.addEventListener('click',()=>completeDay(b.dataset.complete)));
 }
