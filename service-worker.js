@@ -1,4 +1,4 @@
-const CACHE = 'plan90-v0.2-exercise-illustrations';
+const CACHE = 'plan90-v0.2-montse-profile';
 const ASSETS = [
   './?v=021',
   'index.html',

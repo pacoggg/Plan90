@@ -1,5 +1,7 @@
-const START_WEIGHT = 98.5;
-const TARGET_WEIGHT = 89.9;
+const profiles = {
+  yo: {name:'Mi plan', startWeight:98.5, targetWeight:89.9, storageKey:'plan90Data', note:'Plan personal de pérdida de peso.'},
+  montse: {name:'Montse', startWeight:73, targetWeight:65, storageKey:'plan90DataMontse', note:'Inicio suave: fuerza, movilidad y caminatas adaptadas.'}
+};
 
 const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const menuDays = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
@@ -122,9 +124,28 @@ const weeklyWorkouts = [
   {day:'Domingo', type:'Descanso activo', detail:'Paseo suave opcional', exercises: []}
 ];
 
+const montseExercises = [
+  {name:'Sentarse y levantarse de una silla', reps:'8 repeticiones', seconds:35, visual:'chair', cue:'Pies apoyados y espalda larga. Sube sin impulso y baja despacio.'},
+  {name:'Flexiones contra la pared', reps:'8 repeticiones', seconds:35, visual:'wall', cue:'Manos a la altura del pecho. Mantén cuello largo y no eleves los hombros.'},
+  {name:'Puente de glúteos suave', reps:'8 repeticiones', seconds:40, visual:'bridge', cue:'Eleva poco la cadera si resulta cómodo. No arquees la zona lumbar ni aguantes la respiración.'},
+  {name:'Bird-dog reducido', reps:'5 por lado', seconds:40, visual:'bird', cue:'Desde cuatro apoyos, desliza solo el brazo o la pierna. Mantén el cuello mirando al suelo.'},
+  {name:'Elevación de talones con apoyo', reps:'12 repeticiones', seconds:35, visual:'calf', cue:'Una mano en la pared o silla. Sube y baja de forma lenta y controlada.'}
+];
+
+const montseWorkouts = [
+  {day:'Lunes', type:'Fuerza suave', detail:'1 vuelta · 15-18 minutos', exercises:montseExercises},
+  {day:'Martes', type:'Caminar', detail:'20 minutos a ritmo cómodo', exercises:[]},
+  {day:'Miércoles', type:'Movilidad suave', detail:'10 minutos · sin dolor', exercises:[]},
+  {day:'Jueves', type:'Caminar', detail:'20-25 minutos a ritmo cómodo', exercises:[]},
+  {day:'Viernes', type:'Fuerza suave', detail:'1 vuelta · 15-18 minutos', exercises:montseExercises},
+  {day:'Sábado', type:'Caminar', detail:'25 minutos a ritmo cómodo', exercises:[]},
+  {day:'Domingo', type:'Descanso activo', detail:'Paseo suave opcional', exercises:[]}
+];
+
 let selectedDay = menuDays[(new Date().getDay()+6)%7];
 let deferredPrompt = null;
 let timerId = null;
 let workoutState = null;
+let activeProfileId = localStorage.getItem('plan90ActiveProfile') || 'yo';
 
 const $ = s => document.querySelector(s);

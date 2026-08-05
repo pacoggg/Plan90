@@ -1,18 +1,21 @@
 const $$ = s => [...document.querySelectorAll(s)];
 
 function getData() {
-  return JSON.parse(localStorage.getItem('plan90Data') || '{"weights":[],"completed":{}}');
+  return JSON.parse(localStorage.getItem(getProfile().storageKey) || '{"weights":[],"completed":{}}');
 }
-function saveData(data) { localStorage.setItem('plan90Data', JSON.stringify(data)); }
+function getProfile() { return profiles[activeProfileId] || profiles.yo; }
+function getWorkouts() { return activeProfileId==='montse' ? montseWorkouts : weeklyWorkouts; }
+function saveData(data) { localStorage.setItem(getProfile().storageKey, JSON.stringify(data)); }
 function formatNumber(n) { return Number(n).toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1}); }
 function todayISO() { return new Date().toISOString().slice(0,10); }
 
 function renderDashboard() {
+  const profile=getProfile();
   const data = getData();
-  const latest = data.weights.length ? data.weights[0].weight : START_WEIGHT;
-  const lost = Math.max(0, START_WEIGHT - latest);
-  const remaining = Math.max(0, latest - TARGET_WEIGHT);
-  const total = START_WEIGHT - TARGET_WEIGHT;
+  const latest = data.weights.length ? data.weights[0].weight : profile.startWeight;
+  const lost = Math.max(0, profile.startWeight - latest);
+  const remaining = Math.max(0, latest - profile.targetWeight);
+  const total = profile.startWeight - profile.targetWeight;
   const pct = Math.min(100, Math.round((lost / total) * 100));
   $('#currentWeight').textContent = formatNumber(latest);
   $('#lostWeight').textContent = `${formatNumber(lost)} kg`;
@@ -24,7 +27,7 @@ function renderDashboard() {
   const dayName = days[now.getDay()];
   $('#todayName').textContent = dayName;
   $('#todayDate').textContent = now.toLocaleDateString('es-ES',{day:'2-digit',month:'short'});
-  const workout = weeklyWorkouts.find(w => w.day === dayName);
+  const workout = getWorkouts().find(w => w.day === dayName);
   $('#todayWorkout').textContent = workout ? `${workout.type} · ${workout.detail}` : 'Descanso';
   const menu = weeklyMenu[dayName];
   $('#nextMeal').textContent = menu ? menu[1][1] : 'Consulta el menú del día';
@@ -73,12 +76,12 @@ function openRecipe(key) {
 
 function renderWorkouts() {
   const data = getData();
-  $('#workoutWeek').innerHTML = weeklyWorkouts.map((w,i) => {
+  $('#workoutWeek').innerHTML = getWorkouts().map((w,i) => {
     const done = data.completed[w.day] === todayISO();
     return `<article class="workout-card ${done?'done':''}">
       <header><div><span class="label">${w.day}</span><h3>${w.type}</h3><p class="meal-meta">${w.detail}</p></div><span class="pill">${done?'Hecho':'Semana 1'}</span></header>
       <div class="workout-actions">
-        ${w.type==='Fuerza'?`<button class="primary" data-start-workout="${i}">Empezar rutina</button>`:`<button class="secondary" data-complete="${w.day}">${done?'Completado':'Marcar como hecho'}</button>`}
+        ${w.exercises.length?`<button class="primary" data-start-workout="${i}">Empezar rutina</button>`:`<button class="secondary" data-complete="${w.day}">${done?'Completado':'Marcar como hecho'}</button>`}
       </div>
     </article>`;
   }).join('');
@@ -90,13 +93,14 @@ function completeDay(day) {
 }
 
 function startWorkout(index) {
-  workoutState = {workoutIndex:index, exerciseIndex:0, round:1, running:false, remaining:strengthExercises[0].seconds};
+  const workout=getWorkouts()[index];
+  workoutState = {workoutIndex:index, exerciseIndex:0, round:1, totalRounds:activeProfileId==='montse'?1:2, exercises:workout.exercises, running:false, remaining:workout.exercises[0].seconds};
   renderWorkoutDialog(); $('#workoutDialog').showModal();
 }
 function renderWorkoutDialog() {
-  const ex = strengthExercises[workoutState.exerciseIndex];
+  const ex = workoutState.exercises[workoutState.exerciseIndex];
   $('#workoutContent').innerHTML = `
-    <p class="eyebrow">VUELTA ${workoutState.round} DE 2 · EJERCICIO ${workoutState.exerciseIndex+1} DE ${strengthExercises.length}</p>
+    <p class="eyebrow">VUELTA ${workoutState.round} DE ${workoutState.totalRounds} · EJERCICIO ${workoutState.exerciseIndex+1} DE ${workoutState.exercises.length}</p>
     <div class="exercise-name">${ex.name}</div>
     <div class="exercise-visual-card"><img class="exercise-figure" src="assets/exercises/${ex.visual}.png" alt="Ilustración del ejercicio: ${ex.name}"><div><strong>Posición de referencia</strong><small>Ilustración original · músculos principales en color</small></div></div>
     <p><strong>${ex.reps}</strong></p><p class="muted">${ex.cue}</p>
@@ -121,15 +125,15 @@ function nextExercise() {
   clearInterval(timerId);
   workoutState.running=false;
   workoutState.exerciseIndex++;
-  if (workoutState.exerciseIndex >= strengthExercises.length) {
-    if (workoutState.round < 2) { workoutState.round++; workoutState.exerciseIndex=0; }
+  if (workoutState.exerciseIndex >= workoutState.exercises.length) {
+    if (workoutState.round < workoutState.totalRounds) { workoutState.round++; workoutState.exerciseIndex=0; }
     else {
-      completeDay(weeklyWorkouts[workoutState.workoutIndex].day);
-      $('#workoutContent').innerHTML='<div class="recipe-hero"><p class="eyebrow">ENTRENAMIENTO COMPLETADO</p><h2>Buen trabajo</h2><p>Has terminado las dos vueltas del circuito.</p></div><button class="primary full" id="finishWorkout">Cerrar</button>';
+      completeDay(getWorkouts()[workoutState.workoutIndex].day);
+      $('#workoutContent').innerHTML='<div class="recipe-hero"><p class="eyebrow">ENTRENAMIENTO COMPLETADO</p><h2>Buen trabajo</h2><p>Has terminado la rutina de hoy.</p></div><button class="primary full" id="finishWorkout">Cerrar</button>';
       $('#finishWorkout').onclick=()=>$('#workoutDialog').close(); return;
     }
   }
-  workoutState.remaining=strengthExercises[workoutState.exerciseIndex].seconds;
+  workoutState.remaining=workoutState.exercises[workoutState.exerciseIndex].seconds;
   renderWorkoutDialog();
 }
 
@@ -147,11 +151,22 @@ function navigate(screen) {
   if(screen==='ejercicio') renderWorkouts();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+function renderProfile() {
+  const profile=getProfile();
+  $('#profileName').textContent=profile.name;
+  $('#profileGoal').textContent=`Objetivo inicial: ${formatNumber(profile.targetWeight)} kg`;
+}
+function setProfile(id) {
+  activeProfileId=id; localStorage.setItem('plan90ActiveProfile',id); $('#profileDialog').close();
+  renderProfile(); renderDashboard(); renderWorkouts(); renderHistory();
+}
 
 $$('.nav-item').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.screen)));
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.go)));
 $$('.dialog-close').forEach(b=>b.addEventListener('click',()=>{clearInterval(timerId);b.closest('dialog').close();}));
 $('#sourcesBtn').onclick=()=>$('#sourcesDialog').showModal();
+$('#profileBtn').onclick=()=>$('#profileDialog').showModal();
+$$('[data-profile]').forEach(b=>b.onclick=()=>setProfile(b.dataset.profile));
 
 $('#weightForm').addEventListener('submit', e=>{
   e.preventDefault();
@@ -161,10 +176,10 @@ $('#weightForm').addEventListener('submit', e=>{
   data.weights=data.weights.slice(0,100);
   saveData(data); e.target.reset(); renderHistory(); renderDashboard();
 });
-$('#resetData').onclick=()=>{ if(confirm('¿Borrar todos los registros y entrenamientos?')) { localStorage.removeItem('plan90Data'); renderHistory(); renderDashboard(); renderWorkouts(); } };
+$('#resetData').onclick=()=>{ if(confirm('¿Borrar todos los registros y entrenamientos de este perfil?')) { localStorage.removeItem(getProfile().storageKey); renderHistory(); renderDashboard(); renderWorkouts(); } };
 
 window.addEventListener('beforeinstallprompt', e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').classList.remove('hidden');});
 $('#installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').classList.add('hidden');};
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
-renderDashboard(); renderMenuTabs(); renderMeals(); renderWorkouts(); renderHistory();
+renderProfile(); renderDashboard(); renderMenuTabs(); renderMeals(); renderWorkouts(); renderHistory();
