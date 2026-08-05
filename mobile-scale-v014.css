@@ -1,0 +1,42 @@
+/* Plan90 v0.1.4: escala táctil y legibilidad móvil */
+html { font-size: 17px; }
+body { line-height: 1.45; }
+.app-header { padding-top: calc(14px + env(safe-area-inset-top)) !important; padding-bottom: 12px !important; }
+h1 { font-size: 1.8rem !important; }
+h2 { font-size: 1.45rem !important; }
+h3 { font-size: 1.18rem !important; }
+.eyebrow { font-size: .78rem !important; }
+.muted, .label, .metric-label, .meal-meta { font-size: .95rem !important; }
+main { padding-left: 14px !important; padding-right: 14px !important; }
+.card, .meal-card, .workout-card { padding: 19px !important; border-radius: 20px !important; }
+.hero { min-height: 132px !important; }
+.hero-weight { font-size: 2.65rem !important; }
+.progress-ring { width: 88px !important; height: 88px !important; font-size: 1.08rem !important; }
+.metric { min-height: 88px !important; }
+.metric strong { font-size: 1.35rem !important; }
+.primary, .secondary, .ghost, .danger-outline, .day-tab, .recipe-button { min-height: 50px !important; padding: 13px 17px !important; font-size: 1rem !important; }
+.quick-register { min-height: 54px !important; }
+.today-row { padding: 12px 0 !important; }
+.today-row p { font-size: 1rem !important; }
+.day-tabs { gap: 10px !important; padding-bottom: 16px !important; }
+.day-tab { min-width: 72px !important; }
+.stack { gap: 15px !important; }
+.meal-card h3, .workout-card h3 { font-size: 1.18rem !important; }
+.bottom-nav { min-height: 78px !important; padding-top: 8px !important; }
+.nav-item { min-height: 62px !important; font-size: .85rem !important; }
+.nav-item span { font-size: 1.45rem !important; }
+.dialog { width: 94vw !important; max-width: 94vw !important; max-height: 91dvh !important; padding: 22px !important; border-radius: 24px !important; }
+.dialog-close { width: 44px !important; height: 44px !important; font-size: 1.5rem !important; }
+.recipe-hero { padding: 20px !important; }
+.recipe-grid { gap: 10px !important; }
+.recipe-stat { padding: 13px 8px !important; }
+#recipeContent, #workoutContent { font-size: 1rem; line-height: 1.55; }
+#recipeContent li, #workoutContent li { margin-bottom: 6px; }
+.timer { font-size: 3.5rem !important; }
+.exercise-name { font-size: 1.55rem !important; }
+input { min-height: 54px !important; font-size: 1rem !important; }
+@media (max-width: 390px) {
+  html { font-size: 16px; }
+  main { padding-left: 12px !important; padding-right: 12px !important; }
+  .card, .meal-card, .workout-card { padding: 17px !important; }
+}
