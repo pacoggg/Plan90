@@ -2,7 +2,7 @@
   "name": "Plan 90",
   "short_name": "Plan 90",
   "description": "Menú, ejercicios y seguimiento para bajar de 98,5 kg a menos de 90 kg.",
-  "start_url": "./?v=021",
+  "start_url": "./?v=022",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f6f3",

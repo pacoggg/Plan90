@@ -63,26 +63,10 @@ function renderMeals() {
 }
 function openMontseRecipe(type,title) {
   const cleanTitle=title.replace(/ · \d+ kcal$/,'');
-  const exactRecipes={
-    'Garbanzos con espinacas y bacalao':{ingredients:['160 g de garbanzos cocidos, escurridos','120 g de bacalao desalado','150 g de espinacas frescas o congeladas','100 g de tomate triturado','1 cucharadita de aceite de oliva','Ajo, pimentón dulce y comino'],steps:['Cuece o cocina al vapor el bacalao y desmenúzalo, retirando cualquier espina.','Sofríe el ajo con el aceite, añade el tomate, pimentón y comino durante 3 minutos.','Incorpora las espinacas hasta que bajen de volumen; añade garbanzos y bacalao y cocina 4 minutos más.']},
-    'Lentejas con verduras, huevo y ensalada':{ingredients:['180 g de lentejas cocidas','1 huevo cocido','200 g de zanahoria, calabacín y pimiento','Ensalada de hojas verdes y tomate','1 cucharadita de aceite de oliva','Pimentón y laurel'],steps:['Saltea las verduras con el aceite y añade las lentejas, pimentón y un poco de agua.','Cocina 8 minutos para que se integren los sabores.','Sirve con el huevo cocido troceado y la ensalada aliñada.']},
-    'Merluza, patata cocida y verduras':{ingredients:['150 g de merluza','180 g de patata','250 g de calabacín, zanahoria y judías verdes','1 cucharadita de aceite de oliva','Limón y perejil'],steps:['Cuece la patata y las verduras hasta que estén tiernas.','Haz la merluza a la plancha o al vapor con limón y perejil.','Sirve todo junto con el aceite medido.']},
-    'Crema de calabacín y tortilla francesa':{ingredients:['350 g de calabacín, puerro y zanahoria','2 huevos','40 g de pan integral','1 cucharadita de aceite de oliva'],steps:['Cuece las verduras y tritúralas con parte del agua de cocción.','Bate los huevos y cocina una tortilla francesa con el aceite.','Sirve con la crema y el pan integral.']},
-    'Ensalada completa de atún, huevo y patata':{ingredients:['1 lata de atún al natural escurrido','1 huevo cocido','150 g de patata cocida','Tomate, lechuga y pepino al gusto','1 cucharadita de aceite y vinagre'],steps:['Cuece la patata y el huevo; deja enfriar y trocea.','Mezcla las verduras lavadas con patata, atún y huevo.','Aliña justo antes de servir.']}
-  };
-  const exact=exactRecipes[cleanTitle];
-  if(exact){
-    $('#recipeContent').innerHTML=`<div class="recipe-hero"><p class="eyebrow">RECETA DE MONTSE</p><h2>${cleanTitle}</h2></div><div class="recipe-grid"><div class="recipe-stat"><strong>≈ ${title.match(/\d+(?= kcal)/)?.[0]||'400'}</strong><small>kcal aprox.</small></div><div class="recipe-stat"><strong>1 persona</strong><small>Ración</small></div><div class="recipe-stat"><strong>${type}</strong><small>Momento</small></div></div><h3>Ingredientes</h3><ul>${exact.ingredients.map(x=>`<li>${x}</li>`).join('')}</ul><h3>Preparación</h3><ol>${exact.steps.map(x=>`<li>${x}</li>`).join('')}</ol>`;
-    $('#recipeDialog').showModal(); return;
-  }
-  const portions={
-    Desayuno:['200 g de yogur natural alto en proteína o leche/bebida enriquecida','30 g de avena o 50 g de pan integral','1 pieza de fruta','10 g de nueces, semillas o aguacate'],
-    Comida:['120-150 g de pollo, pescado, tofu o 160 g de legumbre cocida','50-60 g de arroz o pasta en crudo, o 180 g de patata','250 g de verduras','1 cucharada pequeña de aceite de oliva'],
-    Merienda:['1 fruta','1 yogur natural o 60 g de queso fresco','10 g de frutos secos, si aparecen en el menú'],
-    Cena:['120-150 g de pescado, huevo, tofu o legumbre','250 g de verduras','120-180 g de patata o una rebanada de pan integral','1 cucharadita de aceite de oliva']
-  };
-  const steps=type==='Desayuno' ? ['Prepara los ingredientes indicados y ajusta según la opción del día.','Si incluye avena, mézclala con yogur o leche; si incluye pan, tuéstalo.','Añade la fruta al final.'] : ['Cocina la proteína a la plancha, al horno o en guiso suave.','Cuece o saltea las verduras y acompaña con la ración de hidrato indicada.','Aliña con aceite medido, hierbas y especias; evita salsas muy calóricas.'];
-  $('#recipeContent').innerHTML=`<div class="recipe-hero"><p class="eyebrow">RECETA DE MONTSE</p><h2>${cleanTitle}</h2></div><div class="recipe-grid"><div class="recipe-stat"><strong>≈ 1.400</strong><small>kcal/día orientativas</small></div><div class="recipe-stat"><strong>1 persona</strong><small>Ración</small></div><div class="recipe-stat"><strong>${type}</strong><small>Momento</small></div></div><h3>Ingredientes orientativos</h3><ul>${portions[type].map(x=>`<li>${x}</li>`).join('')}</ul><h3>Preparación</h3><ol>${steps.map(x=>`<li>${x}</li>`).join('')}</ol><p class="muted">Ajusta la proteína concreta a la indicada en el nombre de la comida y sustituye por un equivalente si hace falta.</p>`;
+  const recipe=montseRecipes[cleanTitle];
+  if(!recipe) throw new Error(`Falta la receta de Montse: ${cleanTitle}`);
+  const calories=title.match(/\d+(?= kcal)/)?.[0]||'';
+  $('#recipeContent').innerHTML=`<div class="recipe-hero"><p class="eyebrow">RECETA DE MONTSE</p><h2>${cleanTitle}</h2></div><div class="recipe-grid"><div class="recipe-stat"><strong>${recipe.time}</strong><small>Tiempo</small></div><div class="recipe-stat"><strong>≈ ${calories}</strong><small>kcal aprox.</small></div><div class="recipe-stat"><strong>1 persona</strong><small>Ración</small></div></div><h3>Ingredientes</h3><ul>${recipe.ingredients.map(x=>`<li>${x}</li>`).join('')}</ul><h3>Preparación</h3><ol>${recipe.steps.map(x=>`<li>${x}</li>`).join('')}</ol><p class="muted">Cantidades orientativas para la ración indicada en el menú de Montse.</p>`;
   $('#recipeDialog').showModal();
 }
 function openRecipe(key) {
