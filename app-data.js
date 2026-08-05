@@ -104,6 +104,16 @@ const weeklyMenu = {
   ]
 };
 
+const montseMenu = {
+  Lunes:[['Desayuno','Yogur natural alto en proteína, avena, frutos rojos y nueces · 350 kcal',''],['Comida','Lentejas con verduras, huevo y ensalada · 480 kcal',''],['Merienda','Fruta y queso fresco · 150 kcal',''],['Cena','Merluza, patata cocida y verduras · 400 kcal','']],
+  Martes:[['Desayuno','Tostada integral con tomate, pavo y fruta · 340 kcal',''],['Comida','Pollo a la plancha, arroz integral y verduras · 500 kcal',''],['Merienda','Yogur natural y 10 almendras · 160 kcal',''],['Cena','Crema de calabacín y tortilla francesa · 390 kcal','']],
+  Miércoles:[['Desayuno','Porridge de avena con leche o bebida enriquecida y plátano · 350 kcal',''],['Comida','Garbanzos con espinacas y bacalao · 490 kcal',''],['Merienda','Fruta y yogur · 150 kcal',''],['Cena','Ensalada completa de atún, huevo y patata · 400 kcal','']],
+  Jueves:[['Desayuno','Yogur, fruta, avena y semillas · 350 kcal',''],['Comida','Pasta integral con atún, tomate y calabacín · 500 kcal',''],['Merienda','Queso fresco con fruta · 150 kcal',''],['Cena','Salteado de tofu o pollo con verduras · 390 kcal','']],
+  Viernes:[['Desayuno','Tostada integral, aguacate, huevo y fruta · 360 kcal',''],['Comida','Salmón al horno, boniato y ensalada · 500 kcal',''],['Merienda','Yogur y nueces · 160 kcal',''],['Cena','Verduras salteadas con garbanzos · 380 kcal','']],
+  Sábado:[['Desayuno','Avena con yogur, manzana y canela · 350 kcal',''],['Comida','Pollo al horno con patata y verduras · 500 kcal',''],['Merienda','Fruta y queso fresco · 150 kcal',''],['Cena','Crema de verduras y tortilla · 390 kcal','']],
+  Domingo:[['Desayuno','Tostada integral con tomate, pavo y fruta · 340 kcal',''],['Comida','Arroz con pollo o legumbre y verduras · 500 kcal',''],['Merienda','Yogur natural · 130 kcal',''],['Cena','Pescado blanco, verduras y patata · 400 kcal','']]
+};
+
 const strengthExercises = [
   {name:'Sentarse y levantarse de una silla', reps:'12 repeticiones', seconds:40, visual:'chair', cue:'Apoya los pies, inclina ligeramente el tronco y sube soltando el aire.'},
   {name:'Flexiones contra la pared', reps:'12 repeticiones', seconds:40, visual:'wall', cue:'Cuerpo recto, manos a la altura del pecho y codos ligeramente hacia abajo.'},

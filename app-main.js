@@ -5,6 +5,7 @@ function getData() {
 }
 function getProfile() { return profiles[activeProfileId] || profiles.yo; }
 function getWorkouts() { return activeProfileId==='montse' ? montseWorkouts : weeklyWorkouts; }
+function getMenu() { return activeProfileId==='montse' ? montseMenu : weeklyMenu; }
 function saveData(data) { localStorage.setItem(getProfile().storageKey, JSON.stringify(data)); }
 function formatNumber(n) { return Number(n).toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1}); }
 function todayISO() { return new Date().toISOString().slice(0,10); }
@@ -29,7 +30,7 @@ function renderDashboard() {
   $('#todayDate').textContent = now.toLocaleDateString('es-ES',{day:'2-digit',month:'short'});
   const workout = getWorkouts().find(w => w.day === dayName);
   $('#todayWorkout').textContent = workout ? `${workout.type} · ${workout.detail}` : 'Descanso';
-  const menu = weeklyMenu[dayName];
+  const menu = getMenu()[dayName];
   $('#nextMeal').textContent = menu ? menu[1][1] : 'Consulta el menú del día';
   renderMiniChart(data.weights);
 }
@@ -52,7 +53,7 @@ function renderMenuTabs() {
   $$('.day-tab').forEach(btn => btn.addEventListener('click', () => { selectedDay=btn.dataset.day; renderMenuTabs(); renderMeals(); }));
 }
 function renderMeals() {
-  $('#mealList').innerHTML = weeklyMenu[selectedDay].map(([type,title,key]) => `
+  $('#mealList').innerHTML = getMenu()[selectedDay].map(([type,title,key]) => `
     <article class="meal-card">
       <header><div><span class="label">${type}</span><h3>${title}</h3></div>${key?'<span class="pill">Receta</span>':''}</header>
       ${key ? `<button class="secondary recipe-button" data-recipe="${key}">Ver receta completa</button>` : '<p class="meal-meta">Opción sencilla; tómala solo si tienes hambre real.</p>'}
@@ -155,10 +156,11 @@ function renderProfile() {
   const profile=getProfile();
   $('#profileName').textContent=profile.name;
   $('#profileGoal').textContent=`Objetivo inicial: ${formatNumber(profile.targetWeight)} kg`;
+  $('#menuGuidance').textContent=activeProfileId==='montse' ? 'Pauta orientativa: unas 1.400 kcal/día, con proteína, fibra y fuentes de calcio.' : 'Plan semanal flexible y sencillo.';
 }
 function setProfile(id) {
   activeProfileId=id; localStorage.setItem('plan90ActiveProfile',id); $('#profileDialog').close();
-  renderProfile(); renderDashboard(); renderWorkouts(); renderHistory();
+  renderProfile(); renderDashboard(); renderMenuTabs(); renderMeals(); renderWorkouts(); renderHistory();
 }
 
 $$('.nav-item').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.screen)));
