@@ -12,6 +12,7 @@ const ASSETS = [
   'icons/icon.svg',
   'assets/exercises/chair.png', 'assets/exercises/wall.png', 'assets/exercises/bridge.png',
   'assets/exercises/lunge.png', 'assets/exercises/bird.png', 'assets/exercises/plank.png', 'assets/exercises/calf.png'
+  ,'assets/exercises/breathing.png', 'assets/exercises/pelvic-tilt.png', 'assets/exercises/cat-camel.png', 'assets/exercises/chin-tuck.png', 'assets/exercises/neck-turn.png'
 ];
 
 self.addEventListener('install', event => {

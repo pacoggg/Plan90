@@ -143,11 +143,11 @@ const montseExercises = [
 ];
 
 const montseMobilityExercises = [
-  {name:'Respiración diafragmática tumbada', reps:'5 respiraciones lentas', seconds:45, visual:'bridge', cue:'Una mano en el abdomen. Inspira suave por la nariz y suelta el aire sin forzar.'},
-  {name:'Basculación pélvica suave', reps:'8 repeticiones', seconds:40, visual:'bridge', cue:'Tumbada con rodillas flexionadas, aplana suavemente la zona lumbar y vuelve al centro. Sin dolor.'},
-  {name:'Gato-camello de recorrido corto', reps:'6 repeticiones', seconds:40, visual:'bird', cue:'A cuatro apoyos, redondea y vuelve al centro lentamente. No lleves la cabeza hacia atrás.'},
-  {name:'Retracción cervical sentado', reps:'6 repeticiones', seconds:35, visual:'wall', cue:'Mira al frente y lleva la barbilla suavemente hacia atrás, como haciendo papada. No inclines la cabeza.'},
-  {name:'Giros cervicales controlados', reps:'5 por lado', seconds:40, visual:'wall', cue:'Gira la cabeza solo hasta notar tensión suave, no dolor. Mantén los hombros bajos; no hagas círculos con el cuello.'}
+  {name:'Respiración diafragmática tumbada', reps:'5 respiraciones lentas', seconds:45, visual:'breathing', cue:'Una mano en el abdomen. Inspira suave por la nariz y suelta el aire sin forzar.'},
+  {name:'Basculación pélvica suave', reps:'8 repeticiones', seconds:40, visual:'pelvic-tilt', cue:'Tumbada con rodillas flexionadas, aplana suavemente la zona lumbar y vuelve al centro. Sin dolor.'},
+  {name:'Gato-camello de recorrido corto', reps:'6 repeticiones', seconds:40, visual:'cat-camel', cue:'A cuatro apoyos, redondea y vuelve al centro lentamente. No lleves la cabeza hacia atrás.'},
+  {name:'Retracción cervical sentado', reps:'6 repeticiones', seconds:35, visual:'chin-tuck', cue:'Mira al frente y lleva la barbilla suavemente hacia atrás, como haciendo papada. No inclines la cabeza.'},
+  {name:'Giros cervicales controlados', reps:'5 por lado', seconds:40, visual:'neck-turn', cue:'Gira la cabeza solo hasta notar tensión suave, no dolor. Mantén los hombros bajos; no hagas círculos con el cuello.'}
 ];
 
 const montseWorkouts = [
