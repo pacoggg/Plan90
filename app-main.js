@@ -93,24 +93,12 @@ function startWorkout(index) {
   workoutState = {workoutIndex:index, exerciseIndex:0, round:1, running:false, remaining:strengthExercises[0].seconds};
   renderWorkoutDialog(); $('#workoutDialog').showModal();
 }
-function exerciseVisual(kind) {
-  const poses = {
-    chair: '<path d="M72 40v35h34M70 75l-20 28m20-28 22 28M67 43 42 62m31-17 17 15"/><path class="accent-line" d="M29 104h72"/>',
-    wall: '<path d="M104 24v90M74 43l23 15M72 43 54 59m20-16-11 42m12-27 18 16"/><path class="accent-line" d="M38 101h66"/>',
-    bridge: '<path d="M28 89h23l21-28 25 28h26M51 89l-14 18m61-18 14 18"/><circle cx="29" cy="89" r="9"/><path class="accent-line" d="M48 104h55"/>',
-    lunge: '<path d="M66 30v38l-25 31m25-31 27 31M66 45 45 61m21-16 20 16"/><path class="accent-line" d="M30 105h70"/>',
-    bird: '<path d="M40 77h31l27-26M70 77l30 21M52 78l-16 20M51 63l-17-10"/><circle cx="34" cy="53" r="9"/><path class="accent-line" d="M27 105h79"/>',
-    plank: '<path d="M28 45v62M32 64l36 15 29 18M68 79 55 104m29-7 19 8"/><circle cx="33" cy="54" r="9"/><path class="accent-line" d="M25 108h84"/>',
-    calf: '<path d="M63 30v53m0-36-19 16m19-16 20 16m-20 20-18 20m18-20 18 20"/><path class="accent-line" d="M35 105h56M43 105l8-8m26 8 8-8"/>'
-  };
-  return `<svg class="exercise-figure ${kind}" viewBox="0 0 130 125" role="img" aria-label="Ilustración de posición"><circle cx="65" cy="20" r="10"/>${poses[kind] || poses.chair}</svg>`;
-}
 function renderWorkoutDialog() {
   const ex = strengthExercises[workoutState.exerciseIndex];
   $('#workoutContent').innerHTML = `
     <p class="eyebrow">VUELTA ${workoutState.round} DE 2 · EJERCICIO ${workoutState.exerciseIndex+1} DE ${strengthExercises.length}</p>
     <div class="exercise-name">${ex.name}</div>
-    <div class="exercise-visual-card">${exerciseVisual(ex.visual)}<div><strong>Posición de referencia</strong><small>Ilustración original · guía rápida</small></div></div>
+    <div class="exercise-visual-card"><img class="exercise-figure" src="assets/exercises/${ex.visual}.png" alt="Ilustración del ejercicio: ${ex.name}"><div><strong>Posición de referencia</strong><small>Ilustración original · músculos principales en color</small></div></div>
     <p><strong>${ex.reps}</strong></p><p class="muted">${ex.cue}</p>
     <div id="timer" class="timer">${workoutState.remaining}</div>
     <div class="timer-actions"><button id="timerToggle" class="primary">${workoutState.running?'Pausar':'Empezar'}</button><button id="nextExercise" class="secondary">Siguiente</button></div>
