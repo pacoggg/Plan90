@@ -142,10 +142,18 @@ const montseExercises = [
   {name:'Elevación de talones con apoyo', reps:'12 repeticiones', seconds:35, visual:'calf', cue:'Una mano en la pared o silla. Sube y baja de forma lenta y controlada.'}
 ];
 
+const montseMobilityExercises = [
+  {name:'Respiración diafragmática tumbada', reps:'5 respiraciones lentas', seconds:45, visual:'bridge', cue:'Una mano en el abdomen. Inspira suave por la nariz y suelta el aire sin forzar.'},
+  {name:'Basculación pélvica suave', reps:'8 repeticiones', seconds:40, visual:'bridge', cue:'Tumbada con rodillas flexionadas, aplana suavemente la zona lumbar y vuelve al centro. Sin dolor.'},
+  {name:'Gato-camello de recorrido corto', reps:'6 repeticiones', seconds:40, visual:'bird', cue:'A cuatro apoyos, redondea y vuelve al centro lentamente. No lleves la cabeza hacia atrás.'},
+  {name:'Retracción cervical sentado', reps:'6 repeticiones', seconds:35, visual:'wall', cue:'Mira al frente y lleva la barbilla suavemente hacia atrás, como haciendo papada. No inclines la cabeza.'},
+  {name:'Giros cervicales controlados', reps:'5 por lado', seconds:40, visual:'wall', cue:'Gira la cabeza solo hasta notar tensión suave, no dolor. Mantén los hombros bajos; no hagas círculos con el cuello.'}
+];
+
 const montseWorkouts = [
   {day:'Lunes', type:'Fuerza suave', detail:'1 vuelta · 15-18 minutos', exercises:montseExercises},
   {day:'Martes', type:'Caminar', detail:'20 minutos a ritmo cómodo', exercises:[]},
-  {day:'Miércoles', type:'Movilidad suave', detail:'10 minutos · sin dolor', exercises:[]},
+  {day:'Miércoles', type:'Movilidad suave', detail:'5 ejercicios · 10 minutos · sin dolor', exercises:montseMobilityExercises},
   {day:'Jueves', type:'Caminar', detail:'20-25 minutos a ritmo cómodo', exercises:[]},
   {day:'Viernes', type:'Fuerza suave', detail:'1 vuelta · 15-18 minutos', exercises:montseExercises},
   {day:'Sábado', type:'Caminar', detail:'25 minutos a ritmo cómodo', exercises:[]},
