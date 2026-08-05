@@ -1,4 +1,4 @@
-const CACHE = 'plan90-v0.1.1-mobile';
+const CACHE = 'plan90-v0.1.2-fullwidth';
 const ASSETS = ['./','index.html','styles-base.css','styles-components.css','app-data.js','app-main.js','manifest.json','icons/icon.svg'];
 
 self.addEventListener('install', event => {
