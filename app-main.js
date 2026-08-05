@@ -56,9 +56,22 @@ function renderMeals() {
   $('#mealList').innerHTML = getMenu()[selectedDay].map(([type,title,key]) => `
     <article class="meal-card">
       <header><div><span class="label">${type}</span><h3>${title}</h3></div>${key?'<span class="pill">Receta</span>':''}</header>
-      ${key ? `<button class="secondary recipe-button" data-recipe="${key}">Ver receta completa</button>` : '<p class="meal-meta">Opción sencilla; tómala solo si tienes hambre real.</p>'}
+      ${key ? `<button class="secondary recipe-button" data-recipe="${key}">Ver receta completa</button>` : activeProfileId==='montse' ? `<button class="secondary recipe-button" data-montse-recipe="${type}" data-montse-title="${title}">Ver receta</button>` : '<p class="meal-meta">Opción sencilla; tómala solo si tienes hambre real.</p>'}
     </article>`).join('');
   $$('[data-recipe]').forEach(btn => btn.addEventListener('click', () => openRecipe(btn.dataset.recipe)));
+  $$('[data-montse-recipe]').forEach(btn => btn.addEventListener('click', () => openMontseRecipe(btn.dataset.montseRecipe,btn.dataset.montseTitle)));
+}
+function openMontseRecipe(type,title) {
+  const cleanTitle=title.replace(/ · \d+ kcal$/,'');
+  const portions={
+    Desayuno:['200 g de yogur natural alto en proteína o leche/bebida enriquecida','30 g de avena o 50 g de pan integral','1 pieza de fruta','10 g de nueces, semillas o aguacate'],
+    Comida:['120-150 g de pollo, pescado, tofu o 160 g de legumbre cocida','50-60 g de arroz o pasta en crudo, o 180 g de patata','250 g de verduras','1 cucharada pequeña de aceite de oliva'],
+    Merienda:['1 fruta','1 yogur natural o 60 g de queso fresco','10 g de frutos secos, si aparecen en el menú'],
+    Cena:['120-150 g de pescado, huevo, tofu o legumbre','250 g de verduras','120-180 g de patata o una rebanada de pan integral','1 cucharadita de aceite de oliva']
+  };
+  const steps=type==='Desayuno' ? ['Prepara los ingredientes indicados y ajusta según la opción del día.','Si incluye avena, mézclala con yogur o leche; si incluye pan, tuéstalo.','Añade la fruta al final.'] : ['Cocina la proteína a la plancha, al horno o en guiso suave.','Cuece o saltea las verduras y acompaña con la ración de hidrato indicada.','Aliña con aceite medido, hierbas y especias; evita salsas muy calóricas.'];
+  $('#recipeContent').innerHTML=`<div class="recipe-hero"><p class="eyebrow">RECETA DE MONTSE</p><h2>${cleanTitle}</h2></div><div class="recipe-grid"><div class="recipe-stat"><strong>≈ 1.400</strong><small>kcal/día orientativas</small></div><div class="recipe-stat"><strong>1 persona</strong><small>Ración</small></div><div class="recipe-stat"><strong>${type}</strong><small>Momento</small></div></div><h3>Ingredientes orientativos</h3><ul>${portions[type].map(x=>`<li>${x}</li>`).join('')}</ul><h3>Preparación</h3><ol>${steps.map(x=>`<li>${x}</li>`).join('')}</ol><p class="muted">Ajusta la proteína concreta a la indicada en el nombre de la comida y sustituye por un equivalente si hace falta.</p>`;
+  $('#recipeDialog').showModal();
 }
 function openRecipe(key) {
   const r = recipes[key];
