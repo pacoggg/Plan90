@@ -35,7 +35,13 @@ input { width: 100%; min-height: 48px; padding: 13px; border: 1px solid var(--bo
 .recipe-stat strong { display: block; }
 .timer { font-size: 3rem; font-weight: 900; text-align: center; padding: 20px 0 8px; }
 .exercise-name { text-align: center; font-size: 1.35rem; font-weight: 800; }
-.exercise-video-placeholder { aspect-ratio: 16/9; display: grid; place-items: center; text-align: center; background: linear-gradient(135deg,#dcece6,#eef3f1); border-radius: 18px; color: var(--primary); font-weight: 800; padding: 20px; margin: 14px 0; }
+.exercise-intro { color: var(--muted); margin: -4px 0 16px; font-size: .91rem; }
+.exercise-visual-card { min-height: 180px; display: grid; grid-template-columns: 1fr 1fr; align-items: center; background: linear-gradient(135deg,#dcece6,#fff3df); border-radius: 18px; color: var(--primary); padding: 14px 18px; margin: 14px 0; overflow: hidden; }
+.exercise-visual-card small { display: block; color: var(--muted); margin-top: 5px; font-weight: 600; }
+.exercise-figure { width: 100%; max-width: 155px; height: 150px; stroke: var(--primary); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; fill: none; justify-self: center; }
+.exercise-figure circle { fill: var(--accent); stroke: var(--primary); stroke-width: 5; }
+.exercise-figure .accent-line { stroke: #c47b24; stroke-width: 5; stroke-dasharray: 5 6; }
+.sources-content a { color: var(--primary); font-weight: 800; }
 .timer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .mini-chart { min-height: 72px; display: flex; align-items: flex-end; gap: 8px; padding-top: 4px; }
 .chart-bar { flex: 1; min-width: 16px; background: linear-gradient(180deg,var(--accent),#f4c57f); border-radius: 7px 7px 3px 3px; position: relative; }

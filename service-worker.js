@@ -1,14 +1,14 @@
-const CACHE = 'plan90-v0.1.4-scale';
+const CACHE = 'plan90-v0.2-exercise-cards';
 const ASSETS = [
-  './?v=014',
+  './?v=020',
   'index.html',
-  'styles-base.css?v=014',
-  'styles-components.css?v=014',
-  'mobile-fullwidth-v013.css?v=014',
-  'mobile-scale-v014.css',
-  'app-data.js?v=014',
-  'app-main.js?v=014',
-  'manifest.json?v=014',
+  'styles-base.css?v=020',
+  'styles-components.css?v=020',
+  'mobile-fullwidth-v013.css?v=020',
+  'mobile-scale-v014.css?v=020',
+  'app-data.js?v=020',
+  'app-main.js?v=020',
+  'manifest.json?v=020',
   'icons/icon.svg'
 ];
 
@@ -33,7 +33,7 @@ self.addEventListener('fetch', event => {
       const copy = response.clone();
       caches.open(CACHE).then(cache => cache.put(request, copy));
       return response;
-    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=014'))));
+    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=020'))));
     return;
   }
   event.respondWith(caches.match(request).then(cached => cached || fetch(request)));

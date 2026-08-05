@@ -103,13 +103,13 @@ const weeklyMenu = {
 };
 
 const strengthExercises = [
-  {name:'Sentarse y levantarse de una silla', reps:'12 repeticiones', seconds:40, cue:'Apoya los pies, inclina ligeramente el tronco y sube soltando el aire.'},
-  {name:'Flexiones contra la pared', reps:'12 repeticiones', seconds:40, cue:'Cuerpo recto, manos a la altura del pecho y codos ligeramente hacia abajo.'},
-  {name:'Puente de glúteos', reps:'15 repeticiones', seconds:45, cue:'Aprieta glúteos arriba sin arquear la zona lumbar.'},
-  {name:'Zancada corta con apoyo', reps:'8 por pierna', seconds:50, cue:'Sujétate a una silla y baja poco, manteniendo la rodilla alineada.'},
-  {name:'Bird-dog', reps:'8 por lado', seconds:50, cue:'Extiende brazo y pierna contrarios sin girar la cadera.'},
-  {name:'Plancha inclinada en mesa', reps:'20 segundos', seconds:20, cue:'Respira con normalidad y mantén abdomen firme.'},
-  {name:'Elevación de talones', reps:'18 repeticiones', seconds:40, cue:'Sube despacio sobre las puntas y baja de forma controlada.'}
+  {name:'Sentarse y levantarse de una silla', reps:'12 repeticiones', seconds:40, visual:'chair', cue:'Apoya los pies, inclina ligeramente el tronco y sube soltando el aire.'},
+  {name:'Flexiones contra la pared', reps:'12 repeticiones', seconds:40, visual:'wall', cue:'Cuerpo recto, manos a la altura del pecho y codos ligeramente hacia abajo.'},
+  {name:'Puente de glúteos', reps:'15 repeticiones', seconds:45, visual:'bridge', cue:'Aprieta glúteos arriba sin arquear la zona lumbar.'},
+  {name:'Zancada corta con apoyo', reps:'8 por pierna', seconds:50, visual:'lunge', cue:'Sujétate a una silla y baja poco, manteniendo la rodilla alineada.'},
+  {name:'Bird-dog', reps:'8 por lado', seconds:50, visual:'bird', cue:'Extiende brazo y pierna contrarios sin girar la cadera.'},
+  {name:'Plancha inclinada en mesa', reps:'20 segundos', seconds:20, visual:'plank', cue:'Respira con normalidad y mantén abdomen firme.'},
+  {name:'Elevación de talones', reps:'18 repeticiones', seconds:40, visual:'calf', cue:'Sube despacio sobre las puntas y baja de forma controlada.'}
 ];
 
 const weeklyWorkouts = [
