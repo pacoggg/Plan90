@@ -1,12 +1,39 @@
 const $$ = s => [...document.querySelectorAll(s)];
 
+let serverProgress = {weights:[],completed:{}};
+let serverMenu = null;
+
+async function apiJson(path, options={}) {
+  const response = await fetch(path, {
+    ...options,
+    headers: options.body ? {'Content-Type':'application/json',...(options.headers||{})} : options.headers
+  });
+  const payload = await response.json().catch(()=>({}));
+  if (!response.ok) throw new Error(payload.error || 'No se pudo completar la operación');
+  return payload;
+}
+
+function showToast(message) {
+  const toast=$('#toast');
+  toast.textContent=message; toast.classList.remove('hidden');
+  clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>toast.classList.add('hidden'),2600);
+}
+
+function escapeHtml(value) {
+  return String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+}
+
 function getData() {
-  return JSON.parse(localStorage.getItem(getProfile().storageKey) || '{"weights":[],"completed":{}}');
+  return serverProgress;
 }
 function getProfile() { return profiles[activeProfileId] || profiles.yo; }
 function getWorkouts() { return activeProfileId==='montse' ? montseWorkouts : weeklyWorkouts; }
-function getMenu() { return activeProfileId==='montse' ? montseMenu : weeklyMenu; }
-function saveData(data) { localStorage.setItem(getProfile().storageKey, JSON.stringify(data)); }
+function getDefaultMenu() { return activeProfileId==='montse' ? montseMenu : weeklyMenu; }
+function getMenu() { return serverMenu || getDefaultMenu(); }
+function saveData(data) {
+  serverProgress=data;
+  apiJson('/api/progress',{method:'PUT',body:JSON.stringify(serverProgress)}).then(()=>showToast('Progreso guardado')).catch(error=>showToast(error.message));
+}
 function formatNumber(n) { return Number(n).toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1}); }
 function todayISO() { return new Date().toISOString().slice(0,10); }
 
@@ -55,11 +82,28 @@ function renderMenuTabs() {
 function renderMeals() {
   $('#mealList').innerHTML = getMenu()[selectedDay].map(([type,title,key]) => `
     <article class="meal-card">
-      <header><div><span class="label">${type}</span><h3>${title}</h3></div>${key?'<span class="pill">Receta</span>':''}</header>
-      ${key ? `<button class="secondary recipe-button" data-recipe="${key}">Ver receta completa</button>` : activeProfileId==='montse' ? `<button class="secondary recipe-button" data-montse-recipe="${type}" data-montse-title="${title}">Ver receta</button>` : '<p class="meal-meta">Opción sencilla; tómala solo si tienes hambre real.</p>'}
+      <header><div><span class="label">${escapeHtml(type)}</span><h3>${escapeHtml(title)}</h3></div>${key && recipes[key]?'<span class="pill">Receta</span>':''}</header>
+      ${key && recipes[key] ? `<button class="secondary recipe-button" data-recipe="${escapeHtml(key)}">Ver receta completa</button>` : activeProfileId==='montse' && montseRecipes[title.replace(/ · \d+ kcal$/,'')] ? `<button class="secondary recipe-button" data-montse-recipe="${escapeHtml(type)}" data-montse-title="${escapeHtml(title)}">Ver receta</button>` : '<p class="meal-meta">Opción personalizada.</p>'}
     </article>`).join('');
   $$('[data-recipe]').forEach(btn => btn.addEventListener('click', () => openRecipe(btn.dataset.recipe)));
   $$('[data-montse-recipe]').forEach(btn => btn.addEventListener('click', () => openMontseRecipe(btn.dataset.montseRecipe,btn.dataset.montseTitle)));
+}
+
+function openMenuEditor() {
+  const meals=(getMenu()[selectedDay] || []).map(row=>[...row]);
+  $('#editMenuTitle').textContent=`Editar ${selectedDay}`;
+  $('#editMenuForm').innerHTML=meals.map((meal,index)=>`<label class="meal-edit-row"><span>${escapeHtml(meal[0])}</span><input name="meal-${index}" value="${escapeHtml(meal[1])}" maxlength="240" required /></label>`).join('')+'<button class="primary full" type="submit">Guardar menú</button>';
+  $('#editMenuForm').onsubmit=async event=>{
+    event.preventDefault();
+    const next=JSON.parse(JSON.stringify(getMenu()));
+    meals.forEach((meal,index)=>meal[1]=event.target.elements[`meal-${index}`].value.trim());
+    next[selectedDay]=meals;
+    try {
+      const saved=await apiJson('/api/menu',{method:'PUT',body:JSON.stringify(next)});
+      serverMenu=saved.menu; renderMeals(); $('#editMenuDialog').close(); showToast('Menú actualizado');
+    } catch(error) { showToast(error.message); }
+  };
+  $('#editMenuDialog').showModal();
 }
 function openMontseRecipe(type,title) {
   const cleanTitle=title.replace(/ · \d+ kcal$/,'');
@@ -180,7 +224,7 @@ $$('[data-go]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.go)
 $$('.dialog-close').forEach(b=>b.addEventListener('click',()=>{clearInterval(timerId);b.closest('dialog').close();}));
 $('#sourcesBtn').onclick=()=>$('#sourcesDialog').showModal();
 $('#profileBtn').onclick=()=>$('#profileDialog').showModal();
-$$('[data-profile]').forEach(b=>b.onclick=()=>setProfile(b.dataset.profile));
+$('#editMenuBtn').onclick=openMenuEditor;
 
 $('#weightForm').addEventListener('submit', e=>{
   e.preventDefault();
@@ -190,10 +234,81 @@ $('#weightForm').addEventListener('submit', e=>{
   data.weights=data.weights.slice(0,100);
   saveData(data); e.target.reset(); renderHistory(); renderDashboard();
 });
-$('#resetData').onclick=()=>{ if(confirm('¿Borrar todos los registros y entrenamientos de este perfil?')) { localStorage.removeItem(getProfile().storageKey); renderHistory(); renderDashboard(); renderWorkouts(); } };
+$('#resetData').onclick=()=>{ if(confirm('¿Borrar todos tus registros y entrenamientos guardados?')) { serverProgress={weights:[],completed:{}}; saveData(serverProgress); renderHistory(); renderDashboard(); renderWorkouts(); } };
+
+$('#exportData').onclick=async()=>{
+  try {
+    const payload=await apiJson('/api/export');
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`plan90-${activeProfileId}-${todayISO()}.json`; link.click(); URL.revokeObjectURL(link.href);
+  } catch(error) { showToast(error.message); }
+};
+$('#importData').onclick=()=>$('#importFile').click();
+$('#importFile').onchange=async event=>{
+  const file=event.target.files[0]; if(!file)return;
+  try {
+    const payload=JSON.parse(await file.text());
+    if(!confirm('¿Importar esta copia y sustituir tus datos actuales?'))return;
+    await apiJson('/api/import',{method:'POST',body:JSON.stringify({progress:payload.progress,menu:payload.menu})});
+    await loadState(); showToast('Copia importada');
+  } catch(error) { showToast(`No se pudo importar: ${error.message}`); }
+  finally { event.target.value=''; }
+};
+
+$('#logoutBtn').onclick=async()=>{await apiJson('/api/logout',{method:'POST'});location.reload();};
+$('#passwordForm').onsubmit=async event=>{
+  event.preventDefault();
+  try {
+    await apiJson('/api/password',{method:'POST',body:JSON.stringify({currentPassword:$('#currentPassword').value,newPassword:$('#newPassword').value})});
+    event.target.reset(); $('#profileDialog').close(); showToast('Contraseña actualizada');
+  } catch(error) { showToast(error.message); }
+};
 
 window.addEventListener('beforeinstallprompt', e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').classList.remove('hidden');});
 $('#installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').classList.add('hidden');};
 
-if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
-renderProfile(); renderDashboard(); renderMenuTabs(); renderMeals(); renderWorkouts(); renderHistory();
+async function migrateLegacyIfNeeded() {
+  if(serverProgress.weights.length || Object.keys(serverProgress.completed).length)return;
+  const raw=localStorage.getItem(getProfile().storageKey);
+  if(!raw)return;
+  try {
+    const legacy=JSON.parse(raw);
+    if((legacy.weights?.length || Object.keys(legacy.completed||{}).length) && confirm('Hemos encontrado progreso guardado en este navegador. ¿Importarlo a tu cuenta privada?')) {
+      await apiJson('/api/import',{method:'POST',body:JSON.stringify({progress:legacy})});
+      serverProgress=legacy; showToast('Progreso anterior importado');
+    }
+  } catch { /* Una copia antigua dañada no debe bloquear el acceso. */ }
+}
+
+async function loadState() {
+  const state=await apiJson('/api/state');
+  activeProfileId=state.profile.id==='montse'?'montse':'yo';
+  serverProgress=state.progress || {weights:[],completed:{}};
+  serverMenu=state.menu;
+  await migrateLegacyIfNeeded();
+  $('#accountName').textContent=state.profile.name;
+  renderProfile(); renderDashboard(); renderMenuTabs(); renderMeals(); renderWorkouts(); renderHistory();
+}
+
+async function enterApp() {
+  await loadState();
+  $('#authScreen').classList.add('hidden'); $('#appShell').classList.remove('hidden');
+}
+
+$('#loginForm').onsubmit=async event=>{
+  event.preventDefault(); $('#loginError').classList.add('hidden');
+  try {
+    await apiJson('/api/login',{method:'POST',body:JSON.stringify({username:$('#loginUser').value,password:$('#loginPassword').value})});
+    $('#loginPassword').value=''; await enterApp();
+  } catch(error) { $('#loginError').textContent=error.message; $('#loginError').classList.remove('hidden'); }
+};
+
+async function boot() {
+  try {
+    const session=await apiJson('/api/session');
+    if(session.authenticated) await enterApp(); else $('#authScreen').classList.remove('hidden');
+  } catch(error) { $('#loginError').textContent=error.message; $('#loginError').classList.remove('hidden'); $('#authScreen').classList.remove('hidden'); }
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+}
+
+boot();

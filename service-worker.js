@@ -1,14 +1,15 @@
-const CACHE = 'plan90-v0.2-recetas-completas';
+const CACHE = 'plan90-v1-private';
 const ASSETS = [
-  './?v=022',
+  './?v=100',
   'index.html',
-  'styles-base.css?v=022',
-  'styles-components.css?v=022',
-  'mobile-fullwidth-v013.css?v=022',
-  'mobile-scale-v014.css?v=022',
-  'app-data.js?v=022',
-  'app-main.js?v=022',
-  'manifest.json?v=022',
+  'styles-base.css?v=100',
+  'styles-components.css?v=100',
+  'mobile-fullwidth-v013.css?v=100',
+  'mobile-scale-v014.css?v=100',
+  'app-data.js?v=100',
+  'app-main.js?v=100',
+  'dashboard-time-v023.js?v=100',
+  'manifest.json?v=100',
   'icons/icon.svg',
   'assets/exercises/chair.png', 'assets/exercises/wall.png', 'assets/exercises/bridge.png',
   'assets/exercises/lunge.png', 'assets/exercises/bird.png', 'assets/exercises/plank.png', 'assets/exercises/calf.png'
@@ -31,12 +32,13 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
+  if (new URL(request.url).pathname.startsWith('/api/')) return;
   if (request.mode === 'navigate' || ['style','script','manifest'].includes(request.destination)) {
     event.respondWith(fetch(request).then(response => {
       const copy = response.clone();
       caches.open(CACHE).then(cache => cache.put(request, copy));
       return response;
-    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=022'))));
+    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=100'))));
     return;
   }
   event.respondWith(caches.match(request).then(cached => cached || fetch(request)));

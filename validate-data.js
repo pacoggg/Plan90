@@ -1,5 +1,5 @@
-const fs = require('fs');
-const vm = require('vm');
+import fs from 'node:fs';
+import vm from 'node:vm';
 
 const source = fs.readFileSync('app-data.js', 'utf8') + '\nthis.__menu=montseMenu;this.__recipes=montseRecipes;';
 const context = {localStorage:{getItem(){ return null; }}};
