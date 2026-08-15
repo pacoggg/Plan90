@@ -12,9 +12,8 @@ if [ -f "$project_dir/data/plan90.json" ]; then
   cp "$project_dir/data/plan90.json" "$backup_dir/plan90-$timestamp.json"
 fi
 
-git fetch origin main
-git checkout main
-git reset --hard origin/main
+git fetch origin refs/heads/main:refs/remotes/origin/main
+git checkout -B main origin/main
 docker compose up -d --build --remove-orphans
 
 for attempt in $(seq 1 18); do
