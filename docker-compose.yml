@@ -11,7 +11,7 @@ services:
     networks:
       - proxy
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/api/health"]
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:80/api/health"]
       interval: 10s
       timeout: 3s
       retries: 5

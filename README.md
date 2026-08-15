@@ -32,4 +32,4 @@ npm run validate:data
 
 ## Producción
 
-El contenedor se conecta a la red Docker externa `proxy`. Los datos persistentes viven en `./data/plan90.json`; el script de despliegue guarda una copia previa en `/srv/docker/backups/plan90`.
+El contenedor se conecta a la red Docker externa `proxy` y escucha como `plan90:80`. Los datos persistentes viven en `./data/plan90.json`; el script de despliegue guarda una copia previa en `/srv/docker/backups/plan90`.

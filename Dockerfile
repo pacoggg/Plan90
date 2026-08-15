@@ -9,8 +9,8 @@ COPY styles-base.css styles-components.css mobile-fullwidth-v013.css mobile-scal
 COPY icons ./icons
 COPY assets ./assets
 
-ENV NODE_ENV=production PORT=3000 DATA_DIR=/data
-EXPOSE 3000
+ENV NODE_ENV=production PORT=80 DATA_DIR=/data
+EXPOSE 80
 VOLUME ["/data"]
 USER node
 CMD ["node", "server.js"]
