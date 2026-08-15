@@ -1,0 +1,23 @@
+services:
+  plan90:
+    build: .
+    image: plan90:local
+    container_name: plan90
+    restart: unless-stopped
+    env_file:
+      - path: .plan90.env
+        format: raw
+    volumes:
+      - ./data:/data
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:80/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+networks:
+  proxy:
+    external: true

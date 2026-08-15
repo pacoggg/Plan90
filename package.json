@@ -1,0 +1,16 @@
+{
+  "name": "plan90",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "validate:data": "node validate-data.js",
+    "hash-password": "node scripts/hash-password.js",
+    "setup-passwords": "node scripts/setup-passwords.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

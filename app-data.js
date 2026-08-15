@@ -194,6 +194,6 @@ let selectedWorkoutDay = selectedDay;
 let deferredPrompt = null;
 let timerId = null;
 let workoutState = null;
-let activeProfileId = localStorage.getItem('plan90ActiveProfile') || 'yo';
+let activeProfileId = null;
 
 const $ = s => document.querySelector(s);
