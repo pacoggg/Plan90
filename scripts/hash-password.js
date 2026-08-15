@@ -5,7 +5,7 @@ if (!process.stdin.isTTY) {
   process.exit(1);
 }
 
-process.stdout.write('Contraseña (mínimo 12 caracteres): ');
+process.stdout.write('PIN (4 cifras): ');
 process.stdin.setRawMode(true);
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
@@ -17,8 +17,8 @@ process.stdin.on('data', chunk => {
     process.stdin.setRawMode(false);
     process.stdin.pause();
     process.stdout.write('\n');
-    if (password.length < 12) {
-      console.error('La contraseña debe tener al menos 12 caracteres.');
+    if (!/^\d{4}$/.test(password)) {
+      console.error('El PIN debe tener exactamente 4 cifras.');
       process.exit(1);
     }
     const salt = randomBytes(16);

@@ -241,8 +241,8 @@ async function api(req, res, path) {
   if (path === '/api/password' && req.method === 'POST') {
     const input = await body(req);
     const next = String(input.newPassword || '');
-    if (!verifyPassword(String(input.currentPassword || ''), user.passwordHash)) return json(res, 403, { error: 'La contraseña actual no es correcta' });
-    if (next.length < 12 || next.length > 200) return json(res, 400, { error: 'La nueva contraseña debe tener al menos 12 caracteres' });
+    if (!verifyPassword(String(input.currentPassword || ''), user.passwordHash)) return json(res, 403, { error: 'El PIN actual no es correcto' });
+    if (!/^\d{4}$/.test(next)) return json(res, 400, { error: 'El nuevo PIN debe tener exactamente 4 cifras' });
     user.passwordHash = hashPassword(next);
     user.sessionVersion = randomBytes(16).toString('base64url');
     user.updatedAt = new Date().toISOString();

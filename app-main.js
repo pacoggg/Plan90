@@ -260,7 +260,7 @@ $('#passwordForm').onsubmit=async event=>{
   event.preventDefault();
   try {
     await apiJson('/api/password',{method:'POST',body:JSON.stringify({currentPassword:$('#currentPassword').value,newPassword:$('#newPassword').value})});
-    event.target.reset(); $('#profileDialog').close(); showToast('Contraseña actualizada');
+    event.target.reset(); $('#profileDialog').close(); showToast('PIN actualizado');
   } catch(error) { showToast(error.message); }
 };
 

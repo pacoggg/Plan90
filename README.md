@@ -15,13 +15,13 @@ Aplicación privada de seguimiento para dos cuentas fijas: Paco y Montse.
 
 ## Configuración
 
-Configura las contraseñas de Paco y Montse sin mostrarlas en pantalla:
+Configura los PIN de 4 cifras de Paco y Montse sin mostrarlos en pantalla:
 
 ```bash
 npm run setup-passwords
 ```
 
-El comando pide ambas contraseñas dos veces, crea `.env` con hashes `scrypt` y genera un secreto de sesión aleatorio. `.env` y `data/` están excluidos de Git.
+El comando pide ambos PIN dos veces, crea `.env` con hashes `scrypt` y genera un secreto de sesión aleatorio. Los intentos de acceso están limitados. `.env` y `data/` están excluidos de Git.
 
 ## Desarrollo y pruebas
 

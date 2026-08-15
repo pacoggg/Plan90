@@ -51,10 +51,10 @@ function hashPassword(password) {
 }
 
 async function askPassword(name) {
-  const password = await hiddenPrompt(`Contraseña de ${name} (mínimo 12 caracteres): `);
-  if (password.length < 12) throw new Error(`La contraseña de ${name} es demasiado corta.`);
-  const confirmation = await hiddenPrompt(`Repite la contraseña de ${name}: `);
-  if (password !== confirmation) throw new Error(`Las contraseñas de ${name} no coinciden.`);
+  const password = await hiddenPrompt(`PIN de ${name} (4 cifras): `);
+  if (!/^\d{4}$/.test(password)) throw new Error(`El PIN de ${name} debe tener exactamente 4 cifras.`);
+  const confirmation = await hiddenPrompt(`Repite el PIN de ${name}: `);
+  if (password !== confirmation) throw new Error(`Los PIN de ${name} no coinciden.`);
   return password;
 }
 
@@ -74,7 +74,7 @@ try {
 
   writeFileSync(envPath, content, { encoding: 'utf8', mode: 0o600 });
   chmodSync(envPath, 0o600);
-  console.log('Configuración privada guardada en .env. Las contraseñas no se han mostrado ni almacenado en texto claro.');
+  console.log('Configuración privada guardada en .env. Los PIN no se han mostrado ni almacenado en texto claro.');
 } catch (error) {
   process.stdin.isTTY && process.stdin.setRawMode?.(false);
   console.error(error.message);
