@@ -21,7 +21,7 @@ Configura los PIN de 4 cifras de Paco y Montse sin mostrarlos en pantalla:
 npm run setup-passwords
 ```
 
-El comando pide ambos PIN dos veces, crea `.env` con hashes `scrypt` y genera un secreto de sesión aleatorio. Los intentos de acceso están limitados. `.env` y `data/` están excluidos de Git.
+El comando pide ambos PIN dos veces, crea `.plan90.env` con hashes `scrypt` y genera un secreto de sesión aleatorio. Los intentos de acceso están limitados. `.plan90.env` y `data/` están excluidos de Git.
 
 ## Desarrollo y pruebas
 

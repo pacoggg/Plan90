@@ -7,7 +7,7 @@ if (!process.stdin.isTTY) {
   process.exit(1);
 }
 
-const envPath = resolve('.env');
+const envPath = resolve('.plan90.env');
 
 function hiddenPrompt(label) {
   return new Promise((resolvePrompt, reject) => {
@@ -60,7 +60,7 @@ async function askPassword(name) {
 
 try {
   if (existsSync(envPath) && !process.argv.includes('--force')) {
-    throw new Error('Ya existe .env. Usa npm run setup-passwords -- --force solo si quieres sustituir las contraseñas.');
+    throw new Error('Ya existe .plan90.env. Usa npm run setup-passwords -- --force solo durante la configuración inicial.');
   }
 
   const pacoPassword = await askPassword('Paco');
@@ -74,7 +74,7 @@ try {
 
   writeFileSync(envPath, content, { encoding: 'utf8', mode: 0o600 });
   chmodSync(envPath, 0o600);
-  console.log('Configuración privada guardada en .env. Los PIN no se han mostrado ni almacenado en texto claro.');
+  console.log('Configuración privada guardada en .plan90.env. Los PIN no se han mostrado ni almacenado en texto claro.');
 } catch (error) {
   process.stdin.isTTY && process.stdin.setRawMode?.(false);
   console.error(error.message);

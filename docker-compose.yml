@@ -5,7 +5,7 @@ services:
     container_name: plan90
     restart: unless-stopped
     env_file:
-      - path: .env
+      - path: .plan90.env
         format: raw
     volumes:
       - ./data:/data
