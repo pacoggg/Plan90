@@ -1,16 +1,17 @@
-const CACHE = 'plan90-v2-menu-variety';
+const CACHE = 'plan90-v3-meal-catalog';
 const ASSETS = [
-  './?v=101',
+  './?v=102',
   'index.html',
-  'styles-base.css?v=101',
-  'styles-components.css?v=101',
-  'mobile-fullwidth-v013.css?v=101',
-  'mobile-scale-v014.css?v=101',
-  'app-data.js?v=101',
-  'menu-variety.js?v=101',
-  'app-main.js?v=101',
-  'dashboard-time-v023.js?v=101',
-  'manifest.json?v=101',
+  'styles-base.css?v=102',
+  'styles-components.css?v=102',
+  'mobile-fullwidth-v013.css?v=102',
+  'mobile-scale-v014.css?v=102',
+  'app-data.js?v=102',
+  'menu-variety.js?v=102',
+  'app-main.js?v=102',
+  'meal-catalog.js?v=102',
+  'dashboard-time-v023.js?v=102',
+  'manifest.json?v=102',
   'icons/icon.svg',
   'assets/exercises/chair.png', 'assets/exercises/wall.png', 'assets/exercises/bridge.png',
   'assets/exercises/lunge.png', 'assets/exercises/bird.png', 'assets/exercises/plank.png', 'assets/exercises/calf.png',
@@ -39,7 +40,7 @@ self.addEventListener('fetch', event => {
       const copy = response.clone();
       caches.open(CACHE).then(cache => cache.put(request, copy));
       return response;
-    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=101'))));
+    }).catch(() => caches.match(request).then(cached => cached || caches.match('./?v=102'))));
     return;
   }
   event.respondWith(caches.match(request).then(cached => cached || fetch(request)));
