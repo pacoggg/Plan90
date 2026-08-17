@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json ./
 COPY server.js ./
 COPY index.html manifest.json service-worker.js ./
-COPY app-data.js menu-variety.js menu-catalog.js app-main.js dashboard-time-v023.js ./
+COPY app-data.js menu-variety.js meal-catalog.js app-main.js dashboard-time-v023.js ./
 COPY styles-base.css styles-components.css mobile-fullwidth-v013.css mobile-scale-v014.css ./
 COPY icons ./icons
 COPY assets ./assets
